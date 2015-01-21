@@ -1,7 +1,4 @@
-
-
 //Kingdoms of Impreca v.01
-//this is just a quick hack of the code, will be making the much bigger actual useful updates tomorrow
 
 #include <iostream>
 #include <fstream> //needed for file in/out
@@ -15,10 +12,46 @@ using namespace std;
 
 string name;
 string password;
-int num_select; //catch all for the menu selections
+string tempstr; //catch all for temp strings
+int tempnum; //catch all for the menu selections
+
 
 void login()
 {
+system("clear");//clear screen
+cout << "username: ";
+cin >> name;
+ifstream inputfile(name.c_str(),fstream::in);//opens file with the users name for input
+inputfile >> name;
+inputfile >> password;
+inputfile.close();
+
+tempnum = 0;
+
+pass:
+if (tempnum == 3)
+{
+{
+exit(0);//end program if too many tries occurs
+}
+
+else
+{
+cout << "\npassword: ";
+cin >> tempstr;
+}
+
+if (tempstr == password)
+{
+cout << "\nLogin Successful\n";
+system ("sleep 2");
+return;
+}
+else tempnum = tempnum + 1;
+{
+cout << "\nwrong password\n";
+goto pass;
+}
 }
 
 void new_user()
@@ -31,7 +64,6 @@ cout << "ok your kingdom is: " << name;
 cout << "\nand your password\n";
 cin >> password;
 cout << "ok and your password will be: " << password;
-
 cin.ignore();//flush the buffer
 ofstream openfile(name.c_str(),fstream::app);//opens file with the users name for input
 openfile << name << endl; //put name into file then end line
@@ -48,28 +80,28 @@ cout << "Welcome to Kingdoms of Impreca v.01\n\n\n\n";
 cout << "If you are new here press 1, else press 2 to login\n";
 
 intro:
-cin >> num_select;
+cin >> tempnum;
 
-switch (num_select)
+switch (tempnum)
 {
  case 1:
         new_user();
         break;
  case 2:
         login();
-       break;
+        break;
 
  default:
         cout << "I said 1 or 2\n";
         goto intro;
 }
-
-
 }
 int main()
+
 {
 intro();
+cout << "\nyou are now going to the main menu\n";
+quit:
 return 0;
 }
-
 
