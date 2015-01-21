@@ -15,6 +15,74 @@ string password;
 string tempstr; //catch all for temp strings
 int tempnum; //catch all for the menu selections
 
+//============================
+
+//Functions
+
+
+void menu()
+{
+menu_start:
+system("clear");// clear screen
+cout << "Main Menu\n\n";
+cout << "1) Build Buildings 2) Generate Resources 3)Market\n";
+cout << "4) Recruit Heroes  5) Messages           6)News\n";
+cout << "7) Lottery         8) Diplomacy          9)Status\n";
+cout << "0) quit";
+
+cout << "\n\n\n\nSelect 1-9 ";
+cin >> tempnum;
+
+switch(tempnum)
+{
+case 1: 
+cout << "\nbuilding not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 2:
+cout << "\nresources not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 3:
+cout << "\nmarket not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 4:
+cout << "\nrecruiting not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 5:
+cout << "\nmessages not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 6:
+cout << "\nnews not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 7:
+cout << "\nlottery not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 8:
+cout << "\ndiplomacy not yet implimented\n";
+system("sleep 2");
+cout << "\ndiplomacy not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 9:
+cout << "\nstatus not yet implimented\n";
+system("sleep 2");
+goto menu_start;
+case 0: exit(0);
+default: 
+cout << "\nPlease press 1-8\n";
+system("sleep 2");
+goto menu_start;
+}
+
+
+}
+
 
 void login()
 {
@@ -31,17 +99,12 @@ tempnum = 0;
 pass:
 if (tempnum == 3)
 {
-{
 exit(0);//end program if too many tries occurs
 }
-
 else
 {
-cout << "\npassword: ";
-cin >> tempstr;
-}
-
-if (tempstr == password)
+string tempstr = getpass("Enter Password: ");//password masking
+if (strcmp(tempstr.c_str(), password.c_str()) == 0) //c.str() to convert strings for comparing
 {
 cout << "\nLogin Successful\n";
 system ("sleep 2");
@@ -51,6 +114,7 @@ else tempnum = tempnum + 1;
 {
 cout << "\nwrong password\n";
 goto pass;
+}
 }
 }
 
@@ -64,6 +128,7 @@ cout << "ok your kingdom is: " << name;
 cout << "\nand your password\n";
 cin >> password;
 cout << "ok and your password will be: " << password;
+
 cin.ignore();//flush the buffer
 ofstream openfile(name.c_str(),fstream::app);//opens file with the users name for input
 openfile << name << endl; //put name into file then end line
@@ -71,6 +136,7 @@ openfile << password << endl;
 openfile.close(); //close the file
 system("sleep 2");
 cout << "\nUser Created\n";
+return;
 }
 
 void intro()
@@ -96,12 +162,15 @@ switch (tempnum)
         goto intro;
 }
 }
+
+//================================================
+
+int main()
 int main()
 
 {
 intro();
-cout << "\nyou are now going to the main menu\n";
+menu();
 quit:
 return 0;
 }
-
