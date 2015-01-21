@@ -1,6 +1,7 @@
 
 
 //Kingdoms of Impreca v.01
+//this is just a quick hack of the code, will be making the much bigger actual useful updates tomorrow
 
 #include <iostream>
 #include <fstream> //needed for file in/out
