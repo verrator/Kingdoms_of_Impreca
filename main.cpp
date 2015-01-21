@@ -166,8 +166,6 @@ switch (tempnum)
 //================================================
 
 int main()
-int main()
-
 {
 intro();
 menu();
