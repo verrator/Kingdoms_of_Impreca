@@ -3,9 +3,8 @@
 #include <iostream>
 #include <fstream> //needed for file in/out
 #include <stdlib.h> //for get pass function
-
 #include <cstring> //needed to get strcmp to work
-
+#include <time.h>
 using namespace std;
 
 //Global Variables
@@ -14,11 +13,77 @@ string name;
 string password;
 string tempstr; //catch all for temp strings
 int tempnum; //catch all for the menu selections
+int gold = 200;
 
+//lottery variables
+int lotterynum;
+int jackpot;
+string lotteryfile = "lottery";
 //============================
 
 //Functions
 
+void lottery()
+{
+
+system("clear");
+ifstream inputfile(lotteryfile.c_str(),fstream::in);//opens lottery file
+inputfile >> lotterynum;
+inputfile >> jackpot;
+inputfile.close();
+
+cout << "Lottery of the Kingdoms\n";
+cout << "Your Gold: " << gold << endl;
+cout << "Current Jackpot: "<< jackpot << endl;
+cout << "It costs 100 gold to take a guess\n";
+cout << "The lottery number is between 100 - 999\n";
+cout << "press 1 to take a guess or 2 to go back\n";
+
+cin >> tempnum;
+
+switch(tempnum)
+{
+case 1:
+if (gold < 100)
+{
+cout << "\nyou do not have enough gold\n";
+system("sleep 2");
+return;
+}
+else
+{
+gold = gold - 100;
+cout << "your guess: ";
+cin >> tempnum;
+if (tempnum == lotterynum)
+{
+gold = gold + jackpot;
+jackpot = 5000;
+
+srand (time(NULL));
+tempnum = rand() % 999 + 100;
+lotterynum = tempnum;
+ofstream outputfile(lotteryfile.c_str(),fstream::out);//opens lottery file
+outputfile << lotterynum << endl;
+outputfile << jackpot;
+outputfile.close();
+cout << "\nCongratulations!! You won the jackpot!!\n";
+system("sleep 2");
+}
+else
+{
+cout << "\nsorry you didnt guess correctly\n";
+system("sleep 2");
+return;
+}
+case 2:
+return;
+
+default:
+return;
+}
+}
+}
 
 void menu()
 {
@@ -60,12 +125,9 @@ cout << "\nnews not yet implimented\n";
 system("sleep 2");
 goto menu_start;
 case 7:
-cout << "\nlottery not yet implimented\n";
-system("sleep 2");
+lottery();
 goto menu_start;
 case 8:
-cout << "\ndiplomacy not yet implimented\n";
-system("sleep 2");
 cout << "\ndiplomacy not yet implimented\n";
 system("sleep 2");
 goto menu_start;
@@ -79,8 +141,6 @@ cout << "\nPlease press 1-8\n";
 system("sleep 2");
 goto menu_start;
 }
-
-
 }
 
 
@@ -101,10 +161,12 @@ if (tempnum == 3)
 {
 exit(0);//end program if too many tries occurs
 }
+
 else
 {
 string tempstr = getpass("Enter Password: ");//password masking
 if (strcmp(tempstr.c_str(), password.c_str()) == 0) //c.str() to convert strings for comparing
+{
 {
 cout << "\nLogin Successful\n";
 system ("sleep 2");
@@ -162,10 +224,10 @@ switch (tempnum)
         goto intro;
 }
 }
-
 //================================================
 
 int main()
+
 {
 intro();
 menu();
