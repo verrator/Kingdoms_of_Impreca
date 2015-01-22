@@ -167,7 +167,6 @@ else
 string tempstr = getpass("Enter Password: ");//password masking
 if (strcmp(tempstr.c_str(), password.c_str()) == 0) //c.str() to convert strings for comparing
 {
-{
 cout << "\nLogin Successful\n";
 system ("sleep 2");
 return;
