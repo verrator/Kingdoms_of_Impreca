@@ -41,6 +41,12 @@ int stone = 1000;
 int iron = 1000;
 int gold = 1000;
 
+//message variables
+
+string news = ".news";
+string space = " ";
+string message = "";
+
 //lottery variables
 int lotterynum;
 int jackpot;
@@ -48,6 +54,123 @@ string lotteryfile = "lottery";
 //============================
 
 //Functions
+
+void send_message()
+{
+
+        cout << "\n" << "which kingdom do you want to send a message? ";
+
+        cin >> tempstr;
+
+        string file = tempstr + news;
+
+        string nl = "\n";
+
+       ifstream openfile(file.c_str());
+
+        if (openfile.is_open())
+
+{
+
+        openfile.close();
+
+        cout << "\n" << "Please type your message for " << tempstr << " below. Remember do not hit return until you are finished.\n\n";
+
+        cin.ignore();
+
+        getline(cin, message);
+
+        ofstream openfile(file.c_str(),fstream::app);
+
+        time_t now = time(0); // the time right now
+
+        date_time = ctime(&now); //update the time
+
+        openfile << date_time + space + message + nl;
+
+        openfile.close();
+
+        system("sleep 1");
+
+        cout << "\nMessage sent\n";
+
+        system("sleep 2");
+
+        return;
+}
+        else
+                {
+                        cout << "\nThat user does not exist\n";
+
+                        system("sleep 1");
+                        return;
+                }
+
+return;
+
+}
+
+void read_message()
+{
+readmessage_start:
+system("clear");
+string file = name + news;
+ifstream openfile(file.c_str());
+while (!openfile.eof())
+{
+getline(openfile, message);
+cout << message << endl;
+}
+
+openfile.close();
+cout << "\n\n\nPress 1 to return ";
+
+cin >> tempnum;
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto readmessage_start;
+        }
+
+switch(tempnum)
+{
+case 1: return;
+default: return;
+}
+}
+
+void messaging()
+{
+messages_start:
+system("clear");
+cout << "The Kingdoms Messaging System\n\n";
+cout << "Press 1 to send message\n";
+cout << "Press 2 to read messages\n";
+cout << "Press 0 to return\n";
+
+cin >> tempnum;
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto messages_start;
+        }
+
+switch(tempnum)
+{
+case 1: send_message();
+return;
+case 2: read_message();
+return;
+case 0: return;
+default: return;
+}
+}
 
 
 void save()
@@ -123,7 +246,7 @@ void status()
 status_start:
 system("clear");
 cout << "Your Kingdom Status:\n\n";
-cout << "Turns: " << turns <<  " Food: " << food << " Wood: " << wood <<" Stone: " << stone << " Iron: " << iron << " Gold: ";
+cout << "Turns: " << turns <<  " Food: " << food << " Wood: " << wood <<" Stone: " << stone << " Iron: " << iron << " Gold: "  << gold << endl;
 
 cout << "\n\n\nPress 1 to return ";
 
@@ -173,7 +296,7 @@ else
 {
 switch(tempnum)
 {
-case 1: 
+case 1:
 if (gold < 100)
 {
 cout << "\nyou do not have enough gold\n";
@@ -225,11 +348,12 @@ menu_start:
 system("clear");// clear screen
 cout << "Main Menu\n\n";
 cout << "1) Build Buildings 2) Generate Resources 3)Market\n";
-cout << "4) Recruit Heroes  5) Messages           6)News\n";
+cout << "4) Recruit Heroes  5) Messages           6)World News\n";
 cout << "7) Lottery         8) Diplomacy          9)Status\n";
 cout << "0) Quit";
 
 cout << "\n\n\n\nSelect 1-9 ";
+
 cin >> tempnum;
 
 if(cin.fail())
@@ -261,8 +385,7 @@ cout << "\nrecruiting not yet implimented\n";
 system("sleep 2");
 goto menu_start;
 case 5:
-cout << "\nmessages not yet implimented\n";
-system("sleep 2");
+messaging();
 goto menu_start;
 case 6:
 cout << "\nnews not yet implimented\n";
@@ -305,7 +428,6 @@ inputfile >> stone;
 inputfile >> iron;
 inputfile >> gold;
 inputfile.close();
-
 tempnum = 0;
 
 pass:
@@ -333,10 +455,23 @@ goto pass;
 
 void new_user()
 {
+name_start:
 system("clear"); // clear screen
 cout << "Welcome lets get your information\n";
 cout << "lets start with your kingdom name with no spaces\n";
 cin >> name;
+ifstream openfile(name.c_str());
+
+if (openfile.is_open())//check to make sure no one else already has this user account
+{
+cout << "\nThis user already exists, please pick a different name\n";
+system("sleep 2");
+goto name_start;
+}
+
+else
+{
+
 cout << "ok your kingdom is: " << name;
 cout << "\nand your password\n";
 cin >> password;
@@ -347,8 +482,6 @@ char* date_time;
 struct tm current;
 
         time_t now = time(0); // the time right now
-
-
 
         date_time = ctime(&now); //update the time
 
@@ -374,9 +507,15 @@ openfile << stone  << endl;
 openfile << iron  << endl;
 openfile << gold  << endl;
 openfile.close(); //close the file
+
+string file = name + news;//create the users news file
+ofstream newsfile(file.c_str(),fstream::app);
+newsfile.close();
+
 system("sleep 2");
 cout << "\nUser Created\n";
 return;
+}
 }
 
 void intro()
@@ -424,3 +563,5 @@ menu();
 quit:
 return 0;
 }
+
+
