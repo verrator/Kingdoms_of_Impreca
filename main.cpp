@@ -46,14 +46,43 @@ int gold = 1000;
 string news = ".news";
 string space = " ";
 string message = "";
+string nl = "\n";
 
 //lottery variables
 int lotterynum;
 int jackpot;
 string lotteryfile = "lottery";
+
+//world news variables
+
+string worldnews = "world_news";
+
+//market variables
+
+string marketfile = "market";
+int market_food;
+int market_wood;
+int market_stone;
+int market_iron;
+int market_gold;
+
 //============================
 
 //Functions
+
+void market_save()//mquick
+{
+ofstream outputfile(marketfile.c_str(),fstream::in);//opens file with the users name for input
+outputfile << market_food << endl;
+outputfile << market_wood << endl;
+outputfile << market_stone << endl;
+outputfile << market_iron << endl;
+outputfile << market_gold << endl;
+outputfile.close();
+}
+
+
+
 
 void send_message()
 {
@@ -66,15 +95,14 @@ void send_message()
 
         string nl = "\n";
 
-       ifstream openfile(file.c_str());
+        ifstream openfile(file.c_str());
 
         if (openfile.is_open())
-
 {
 
         openfile.close();
 
-        cout << "\n" << "Please type your message for " << tempstr << " below. Remember do not hit return until you are finished.\n\n";
+        cout << "\n" << "Please type your message for " << tempstr << " below. Remember do not hit return until you are finished";
 
         cin.ignore();
 
@@ -98,6 +126,7 @@ void send_message()
 
         return;
 }
+
         else
                 {
                         cout << "\nThat user does not exist\n";
@@ -172,6 +201,37 @@ default: return;
 }
 }
 
+void world_news()
+{
+worldnews_start:
+system("clear");
+string file = "world_news";
+ifstream openfile(file.c_str());
+while (!openfile.eof())
+{
+getline(openfile, message);
+cout << message << endl;
+}
+
+openfile.close();
+cout << "\n\n\nPress 1 to return ";
+
+cin >> tempnum;
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto worldnews_start;
+        }
+
+switch(tempnum)
+{
+case 1: return;
+default: return;
+}
+}
 
 void save()
 {
@@ -191,6 +251,386 @@ openfile << gold  << endl;
 openfile.close(); //close the file
 return;
 }
+
+
+void market_buy()
+{
+cout << "\n1) Food  2) Wood  3)Stone  4)Iron 0)Cancel\n";
+mbuy_start:
+cin >> tempnum;
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto mbuy_start;
+        }
+switch(tempnum)
+{
+case 1:cout << "\nHow much food do you want to buy? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto mbuy_start;
+        }
+
+if (tempnum > market_food)
+{
+cout << "\nThe market does not have enough food\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 3) > gold)
+{
+        cout << "\nYou do not have enough gold\n";
+        system("sleep 2");
+        return;
+        }
+        else 
+        {
+        market_gold = market_gold + (tempnum * 3);
+        gold = gold - (tempnum * 3);
+        food = food + tempnum;
+        market_food = market_food - tempnum;
+        save();
+        market_save();
+        return;
+        }
+
+case 2:cout << "\nHow much wood do you want to buy? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto mbuy_start;
+        }
+
+if (tempnum > market_wood)
+{
+cout << "\nThe market does not have enough wood\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 5) > gold)
+{
+        cout << "\nYou do not have enough gold\n";
+        system("sleep 2");
+        return;
+        }
+        else 
+        {
+        market_gold = market_gold + (tempnum * 5);
+        gold = gold - (tempnum * 5);
+        wood = wood + tempnum;
+        market_wood = market_wood - tempnum;
+        save();
+        market_save();
+        return;
+        }
+
+case 3:cout << "\nHow much stone do you want to buy? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto mbuy_start;
+        }
+
+if (tempnum > market_stone)
+{
+cout << "\nThe market does not have enough stone\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 10) > market_gold)
+{
+        cout << "\nYou donot have enough gold\n";
+        system("sleep 2");
+        return;
+        }
+        else 
+        {
+        market_gold = market_gold + (tempnum * 10);
+        gold = gold - (tempnum * 10);
+        stone = stone + tempnum;
+        market_stone = market_stone - tempnum;
+        save();
+        market_save();
+        return;
+        }
+
+case 4:cout << "\nHow much iron do you want to buy? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto mbuy_start;
+        }
+
+if (tempnum > market_iron)
+{
+cout << "\nThe market does not have enough iron\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 20) > market_gold)
+{
+        cout << "\nYou do not have enough gold\n";
+        system("sleep 2");
+        return;
+        }
+        else 
+        {
+        market_gold = market_gold + (tempnum * 20);
+        gold = gold - (tempnum * 20);
+        iron = iron + tempnum;
+        market_iron = market_iron - tempnum;
+        save();
+        market_save();
+        return;
+        }
+default: cout << "\nPlease pick from 1-4\n";
+system("sleep 2");
+goto mbuy_start;
+}
+}
+void market_sell()
+{
+cout << "\n1) Food  2) Wood  3)Stone  4)Iron 0)Cancel\n";
+msell_start:
+cin >> tempnum;
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto msell_start;
+        }
+
+switch(tempnum)
+{
+case 1:cout << "\nHow much food do you want to sell? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          return;
+        }
+
+if (tempnum > food)
+{
+cout << "\nYou dont have enough food\n";
+system("sleep 2");
+return;
+}
+else if (tempnum > market_gold)
+{
+cout << "\nThe market does not have enough gold\n";
+system("sleep 2");
+return;
+}
+else 
+{
+market_gold = market_gold - tempnum;
+gold = gold + tempnum;
+food = food - tempnum;
+market_food = market_food + tempnum;
+save();
+market_save();
+return;
+}
+
+case 2:cout << "\nHow much wood do you want to sell? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto msell_start;
+        }
+
+if (tempnum > wood)
+{
+cout << "\nYou dont have enough wood\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 2) > market_gold)
+{
+        cout << "\nThe market does not have enough gold\n";
+        system("sleep 2");
+        return;
+        }
+        else 
+        {
+        market_gold = market_gold - (tempnum * 2);
+        gold = gold + (tempnum * 2);
+        wood = wood - tempnum;
+        market_wood = market_wood + tempnum;
+        save();
+        market_save();
+        return;
+        }
+
+case 3:cout << "\nHow much stone do you want to sell? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto msell_start;
+        }
+
+if (tempnum > stone)
+{
+cout << "\nYou dont have enough stone\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 5) > market_gold)
+{
+        cout << "\nThe market does not have enough gold\n";
+        system("sleep 2");
+        goto msell_start;
+        }
+        else 
+        {
+        market_gold = market_gold - (tempnum * 5);
+        gold = gold + (tempnum * 5);
+        stone = stone - tempnum;
+        market_stone = market_stone + tempnum;
+        save();
+        market_save();
+        return;
+        }
+
+case 4:cout << "\nHow much iron do you want to sell? ";
+cin >> tempnum;
+
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto msell_start;
+        }
+
+if (tempnum > iron)
+{
+cout << "\nYou dont have enough iron\n";
+system("sleep 2");
+return;
+}
+else if ((tempnum * 10) > market_gold)
+{
+        cout << "\nThe market does not have enough gold\n";
+        system("sleep 2");
+        return;
+        }
+        else 
+        {
+        market_gold = market_gold - (tempnum * 10);
+        gold = gold + (tempnum * 10);
+        iron = iron - tempnum;
+        market_iron = market_iron + tempnum;
+        save();
+        market_save();
+        return;
+        }
+
+case 0: return;
+default: cout << "\nPlease press 1,2,3,4 or 0\n";
+goto msell_start;
+}
+}
+void market() //quick
+{
+market_start:
+system("clear");
+cout << "The Kingdoms Market Place\n\n";
+cout << "Your Resources: Food: " << food << " Wood: " << wood << endl;
+cout << "               Stone: " << stone << " Iron: " << iron << endl;
+cout << "                Gold: " << gold << endl;
+
+cout << "\n\nFood costs 3 gold to buy and sells for 1 gold\n";
+cout << "Wood costs 5 gold to buy and sells for 2 gold\n";
+cout << "Stone costs 10 gold to buy and sells for 5 gold\n";
+cout << "Iron costs 20 gold to buy and sells for 10 gold\n\n\n";
+
+ifstream inputfile(marketfile.c_str(),fstream::in);//opens file with the users name for input
+inputfile >> market_food;
+inputfile >> market_wood;
+inputfile >> market_stone;
+inputfile >> market_iron;
+inputfile >> market_gold;
+inputfile.close();
+
+cout << "Market Food: " << market_food << endl; 
+cout << "Market Wood: " << market_wood << endl;
+cout << "Market Stone: " << market_stone << endl;
+cout << "Market Iron: " << market_iron << endl;
+cout << "Market Gold: " << market_gold<< endl;
+
+cout << "\n\n1) Buy   2) Sell    0)Return\n";
+
+cin >> tempnum;
+if(cin.fail())
+        {
+          cin.clear();
+          cin.ignore();
+          cout << "\nIncorrect entry. Try again: \n";
+          system("sleep 2");
+          goto market_start;
+        }
+
+switch(tempnum)
+{
+case 1:
+market_buy();
+goto market_start;
+
+case 2:
+market_sell();
+goto market_start;
+
+case 0: return;
+default: cout << "\nPlease press 1,2, or 0\n"; 
+goto market_start;
+}
+
+}
+
+
 
 void new_turns()
 {
@@ -246,7 +686,7 @@ void status()
 status_start:
 system("clear");
 cout << "Your Kingdom Status:\n\n";
-cout << "Turns: " << turns <<  " Food: " << food << " Wood: " << wood <<" Stone: " << stone << " Iron: " << iron << " Gold: "  << gold << endl;
+cout << "Turns: " << turns <<  " Food: " << food << " Wood: " << wood <<" Stone: " << stone << " Iron: " << iron << " Gold: " << gold << endl;
 
 cout << "\n\n\nPress 1 to return ";
 
@@ -266,7 +706,6 @@ case 1: return;
 default: return;
 }
 }
-
 void lottery()
 {
 lottery_start:
@@ -296,9 +735,10 @@ else
 {
 switch(tempnum)
 {
-case 1:
+case 1: 
 if (gold < 100)
 {
+cout << "\nyou do not have enough gold\n";
 cout << "\nyou do not have enough gold\n";
 system("sleep 2");
 return;
@@ -321,8 +761,15 @@ ofstream outputfile(lotteryfile.c_str(),fstream::out);//opens lottery file
 outputfile << lotterynum << endl;
 outputfile << jackpot;
 outputfile.close();
+
+
+ofstream newsfile(worldnews.c_str(),fstream::out);//opens world news file
+tempstr = " jackpot was won by ";
+newsfile << date_time << tempstr << name << nl;
+newsfile.close();
+
 cout << "\nCongratulations!! You won the jackpot!!\n";
-save();
+save(); 
 system("sleep 2");
 }
 else
@@ -359,6 +806,7 @@ cin >> tempnum;
 if(cin.fail())
         {
           cin.clear();
+          cin.clear();
           cin.ignore();
           cout << "\nIncorrect entry. Try again: \n";
           system("sleep 2");
@@ -377,8 +825,7 @@ cout << "\nresources not yet implimented\n";
 system("sleep 2");
 goto menu_start;
 case 3:
-cout << "\nmarket not yet implimented\n";
-system("sleep 2");
+market();
 goto menu_start;
 case 4:
 cout << "\nrecruiting not yet implimented\n";
@@ -388,8 +835,7 @@ case 5:
 messaging();
 goto menu_start;
 case 6:
-cout << "\nnews not yet implimented\n";
-system("sleep 2");
+world_news();
 goto menu_start;
 case 7:
 lottery();
@@ -427,7 +873,9 @@ inputfile >> wood;
 inputfile >> stone;
 inputfile >> iron;
 inputfile >> gold;
+inputfile >> gold;
 inputfile.close();
+
 tempnum = 0;
 
 pass:
@@ -460,6 +908,7 @@ system("clear"); // clear screen
 cout << "Welcome lets get your information\n";
 cout << "lets start with your kingdom name with no spaces\n";
 cin >> name;
+
 ifstream openfile(name.c_str());
 
 if (openfile.is_open())//check to make sure no one else already has this user account
@@ -512,6 +961,11 @@ string file = name + news;//create the users news file
 ofstream newsfile(file.c_str(),fstream::app);
 newsfile.close();
 
+ofstream worldnewsfile(worldnews.c_str(),fstream::out);//opens world news file
+tempstr = " A new kingdom is born:  ";
+worldnewsfile << date_time << tempstr << name << nl;
+worldnewsfile.close();
+
 system("sleep 2");
 cout << "\nUser Created\n";
 return;
@@ -551,7 +1005,6 @@ switch (tempnum)
         goto intro;
 }
 }
-
 //================================================
 
 int main()
@@ -563,5 +1016,4 @@ menu();
 quit:
 return 0;
 }
-
 
